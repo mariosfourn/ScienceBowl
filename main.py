@@ -121,7 +121,7 @@ print('Total running time: ', datetime.datetime.now() - start)
 
 # Tune minimal object size for prediction 
 if True:
-    #mn = 'nn0_512_512_3'
+    mn = nn_name[0]
     u_net = NeuralNetwork(LOGS_DIR_NAME,SAVES_DIR_NAME)
     sess = u_net.load_session_from_file(mn)
     y_valid_pred_proba = u_net.get_prediction(sess, x_vld)
