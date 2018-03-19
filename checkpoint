@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/ubuntu/ScienceBowl/nn0_256_256_3"
+all_model_checkpoint_paths: "/home/ubuntu/ScienceBowl/nn0_256_256_3"
