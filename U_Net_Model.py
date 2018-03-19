@@ -437,8 +437,8 @@ class NeuralNetwork():
                                                    feed_dict = feed_dict_train)
                 valid_loss, y_valid_pred = sess.run([self.loss_tf, self.y_pred_tf], 
                                                    feed_dict = feed_dict_valid)
-                train_score = np.mean(get_score(y_trn, y_train_pred,self.min_object_size))
-                valid_score = np.mean(get_score(y_vld, y_valid_pred,self.min_object_size))
+                train_score = np.mean(get_score(y_trn, y_train_pred,))
+                valid_score = np.mean(get_score(y_vld, y_valid_pred,))
                 
                 print(('{:.2f} epoch: train/valid loss = {:.4f}/{:.4f} ' + 
                        'train/valid score = {:.4f}/{:.4f}').format(
