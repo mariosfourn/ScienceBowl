@@ -10,7 +10,7 @@ import os                          # For filepath, directory handling
 import sys                         # System-specific parameters and functions
 import tqdm                        # Use smart progress meter
 
-def get_labeled_mask(mask, cutoff=.5):
+def get_labeled_mask(mask, min_object_size, cutoff=.5):
     """Object segmentation by labeling the mask."""
     mask = mask.reshape(mask.shape[0], mask.shape[1])
     lab_mask = skimage.morphology.label(mask > cutoff) 
@@ -92,11 +92,11 @@ def get_iou(y_true_labeled, y_pred_labeled):
              'pred_labels': pred_labels}
     return params
 
-def get_score_summary(y_true, y_pred):
+def get_score_summary(y_true, y_pred,min_object_size):
     """Compute the score for a single sample including a detailed summary."""
     
-    y_true_labeled = get_labeled_mask(y_true)  
-    y_pred_labeled = get_labeled_mask(y_pred)  
+    y_true_labeled = get_labeled_mask(y_true,min_object_size)  
+    y_pred_labeled = get_labeled_mask(y_pred,min_object_size)  
     
     params = get_iou(y_true_labeled, y_pred_labeled)
     iou = params['iou']

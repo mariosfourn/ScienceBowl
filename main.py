@@ -119,6 +119,23 @@ for i,(train_index, valid_index) in enumerate(kfold.split(x_train)):
 
 print('Total running time: ', datetime.datetime.now() - start)
 
+# Tune minimal object size for prediction 
+if True:
+    #mn = 'nn0_512_512_3'
+    u_net = NeuralNetwork()
+    sess = u_net.load_session_from_file(mn)
+    y_valid_pred_proba = u_net.get_prediction(sess, x_vld)
+    y_valid_pred = trsf_proba_to_binary(y_valid_pred_proba)
+    sess.close()        
+    
+    tmp = min_object_size
+    min_object_sizes = [1,3,5,7,9,20,30,40,50,60,70,80,90,100,110,120,130,140,150,200,300,400,500]
+    for mos in min_object_sizes:
+        min_object_size = mos
+        valid_score = get_score(y_vld, y_valid_pred)
+        print('min_object_size = {}: valid_score min/mean/std/max = {:.3f}/{:.3f}/{:.3f}/{:.3f}'.format(mos, 
+                np.min(valid_score), np.mean(valid_score), np.std(valid_score), np.max(valid_score)))
+    min_object_size = tmp
 
 #Make prediction
 

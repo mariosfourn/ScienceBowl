@@ -20,7 +20,7 @@ class NeuralNetwork():
 
     def __init__(self, LOGS_DIR_NAME,SAVES_DIR_NAME,nn_name='tmp', nn_type='UNet', log_step=0.2, keep_prob=0.33, 
                  mb_size=16, input_shape=[256,256,3], 
-                 output_shape=[256, 256,1]):
+                 output_shape=[256, 256,1],min_object_size=1):
         """Instance constructor."""
         
         # Tunable hyperparameters for training.
@@ -32,6 +32,7 @@ class NeuralNetwork():
         self.dropout_proba = 0.1     # == 1-keep_probability
         self.save_dir_name=SAVES_DIR_NAME
         self.logs_dir_name=LOGS_DIR_NAME
+        self.min_object_size=min_object_size
         
         # Set helper variables.
         self.input_shape = input_shape
@@ -436,8 +437,8 @@ class NeuralNetwork():
                                                    feed_dict = feed_dict_train)
                 valid_loss, y_valid_pred = sess.run([self.loss_tf, self.y_pred_tf], 
                                                    feed_dict = feed_dict_valid)
-                train_score = np.mean(get_score(y_trn, y_train_pred))
-                valid_score = np.mean(get_score(y_vld, y_valid_pred))
+                train_score = np.mean(get_score(y_trn, y_train_pred,self.min_object_size))
+                valid_score = np.mean(get_score(y_vld, y_valid_pred,self.min_object_size))
                 
                 print(('{:.2f} epoch: train/valid loss = {:.4f}/{:.4f} ' + 
                        'train/valid score = {:.4f}/{:.4f}').format(
