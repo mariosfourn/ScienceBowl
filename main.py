@@ -103,7 +103,7 @@ for i,(train_index, valid_index) in enumerate(kfold.split(x_train)):
 
         # Continue training of a pretrained model.
         if False:
-            u_net = NeuralNetwork() 
+            u_net = NeuralNetwork(LOGS_DIR_NAME,SAVES_DIR_NAME) 
             sess = u_net.load_session_from_file(nn_name[0])  
             u_net.attach_saver() 
             u_net.attach_summary(sess) 
@@ -122,7 +122,7 @@ print('Total running time: ', datetime.datetime.now() - start)
 # Tune minimal object size for prediction 
 if True:
     #mn = 'nn0_512_512_3'
-    u_net = NeuralNetwork()
+    u_net = NeuralNetwork(LOGS_DIR_NAME,SAVES_DIR_NAME)
     sess = u_net.load_session_from_file(mn)
     y_valid_pred_proba = u_net.get_prediction(sess, x_vld)
     y_valid_pred = trsf_proba_to_binary(y_valid_pred_proba)
@@ -141,7 +141,7 @@ if True:
 
 # Soft voting majority.
 for i,mn in enumerate(nn_name):
-    u_net = NeuralNetwork()
+    u_net = NeuralNetwork(LOGS_DIR_NAME,SAVES_DIR_NAME)
     sess = u_net.load_session_from_file(mn)
     if i==0: 
         y_test_pred_proba = u_net.get_prediction(sess, x_test)/len(nn_name)
