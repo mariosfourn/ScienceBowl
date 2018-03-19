@@ -10,7 +10,7 @@ import os                          # For filepath, directory handling
 import sys                         # System-specific parameters and functions
 import tqdm                        # Use smart progress meter
 
-def get_labeled_mask(mask, min_object_size, cutoff=.5):
+def get_labeled_mask(mask,cutoff=.5,min_object_size=1):
     """Object segmentation by labeling the mask."""
     mask = mask.reshape(mask.shape[0], mask.shape[1])
     lab_mask = skimage.morphology.label(mask > cutoff) 
@@ -92,11 +92,11 @@ def get_iou(y_true_labeled, y_pred_labeled):
              'pred_labels': pred_labels}
     return params
 
-def get_score_summary(y_true, y_pred,min_object_size):
+def get_score_summary(y_true, y_pred,min_object_size=1):
     """Compute the score for a single sample including a detailed summary."""
     
-    y_true_labeled = get_labeled_mask(y_true,min_object_size)  
-    y_pred_labeled = get_labeled_mask(y_pred,min_object_size)  
+    y_true_labeled = get_labeled_mask(y_true,min_object_size,min_object_size)  
+    y_pred_labeled = get_labeled_mask(y_pred,min_object_size,min_object_size)  
     
     params = get_iou(y_true_labeled, y_pred_labeled)
     iou = params['iou']
@@ -129,18 +129,18 @@ def get_score_summary(y_true, y_pred,min_object_size):
     
     return score, params_dict
 
-def get_score(y_true, y_pred):
+def get_score(y_true, y_pred,min_object_size=1):
     """Compute the score for a batch of samples."""
     scores = []
     for i in range(len(y_true)):
-        score,_ = get_score_summary(y_true[i], y_pred[i])
+        score,_ = get_score_summary(y_true[i], y_pred[i],min_object_size)
         scores.append(score)
     return np.array(scores)
 
-def plot_score_summary(y_true, y_pred):
+def plot_score_summary(y_true, y_pred,min_object_size=1):
     """Plot score summary for a single sample."""
     # Compute score and assign parameters.
-    score, params_dict = get_score_summary(y_true, y_pred)
+    score, params_dict = get_score_summary(y_true, y_pred,min_object_size)
     
     assigned = params_dict['assigned']
     true_not_assigned = params_dict['true_not_assigned']
