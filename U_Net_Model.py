@@ -11,6 +11,7 @@ import os                          # For filepath, directory handling
 import sys                         # System-specific parameters and functions
 import tqdm                        # Use smart progress meter
 from metrics import*
+from transform_data import *
 
 
 class NeuralNetwork():
